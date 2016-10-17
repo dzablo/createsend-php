@@ -180,10 +180,7 @@ if (!class_exists('CS_REST_Wrapper_Base')) {
         function refresh_token() {
             if (!isset($this->_default_call_options['authdetails']) ||
                 !isset($this->_default_call_options['authdetails']['refresh_token'])) {
-                trigger_error(
-                    'Error refreshing token. There is no refresh token set on this object.',
-                    E_USER_ERROR);
-                return array(NULL, NULL, NULL);
+                throw new Exception('Error refreshing token. There is no refresh token set on this object.');
             }
             $body = "grant_type=refresh_token&refresh_token=".urlencode(
                 $this->_default_call_options['authdetails']['refresh_token']);
@@ -203,10 +200,7 @@ if (!class_exists('CS_REST_Wrapper_Base')) {
                 );
                 return array($access_token, $expires_in, $refresh_token);
             } else {
-                trigger_error(
-                    'Error refreshing token. '.$result->response->error.': '.$result->response->error_description,
-                    E_USER_ERROR);
-                return array(NULL, NULL, NULL);
+                throw new Exception('Error refreshing token. '.$result->response->error.': '.$result->response->error_description);
             }
         }
 
